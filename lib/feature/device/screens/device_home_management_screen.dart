@@ -1,5 +1,6 @@
 import 'package:electricity_meter_app/constants/app_colors.dart';
 import 'package:electricity_meter_app/constants/app_resources.dart';
+import 'package:electricity_meter_app/feature/device/screens/pitch_info_screen.dart';
 import 'package:electricity_meter_app/general/widgets/app_navigation_bar.dart';
 import 'package:electricity_meter_app/general/widgets/base_widget.dart';
 import 'package:electricity_meter_app/general/widgets/buttons/default_button.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 class DeviceHomeManagementScreen extends StatelessWidget {
   const DeviceHomeManagementScreen({super.key});
@@ -21,18 +23,16 @@ class DeviceHomeManagementScreen extends StatelessWidget {
           children: [
             const SizedBox(height: 30),
             AppNavigationBar(
-              leftItems: false
-                  ? [
-                      Text(
-                        "Thiết bị",
-                        style: GoogleFonts.inter(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textdark,
-                        ),
-                      ),
-                    ]
-                  : showLeftAppBarWidget(context),
+              leftItems: [
+                Text(
+                  "Vị trí của bạn",
+                  style: GoogleFonts.inter(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textdark,
+                  ),
+                ),
+              ],
               rightItems: [
                 Material(
                   child: InkWell(
@@ -52,16 +52,75 @@ class DeviceHomeManagementScreen extends StatelessWidget {
                     },
                     splashColor: AppColors.grey,
                     customBorder: const CircleBorder(),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Image.asset(AppIcons.ic_plus),
+                    child: const Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Icon(Icons.search),
                     ),
                   ),
                 ),
               ],
             ),
-            showNoDeviceWidget(context),
+            //showNoDeviceWidget(context),
+            Column(
+              children: [
+                showItem(context),
+                showItem(context),
+                showItem(context),
+                showItem(context),
+                showItem(context),
+              ],
+            ),
           ],
+        ),
+      ),
+    );
+  }
+
+  showItem(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Material(
+        child: InkWell(
+          onTap: () {
+            pushNewScreen(
+              context,
+              screen: const PitchInfoScreen(),
+              withNavBar: false,
+            );
+          },
+          splashColor: AppColors.grey.withOpacity(0.1),
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
+              child: Row(
+                children: [
+                  Image.asset(
+                    AppImages.img_login_center,
+                    width: 100,
+                  ),
+                  const SizedBox(width: 10),
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Sân bóng Hoàng Cầu",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                            "Địa chỉ: 69 Hoàng Cầu, Ô Chợ Dừa, Đống Đa, Hà Nội")
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -86,10 +145,10 @@ class DeviceHomeManagementScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
                   children: [
-                    Image.asset(AppIcons.ic_circle_plus),
+                    const Icon(Icons.location_city),
                     const SizedBox(width: 8),
                     Text(
-                      "Thêm thiết bị",
+                      "Tìm kiếm theo khu vực",
                       style: GoogleFonts.inter(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
@@ -103,10 +162,10 @@ class DeviceHomeManagementScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
                   children: [
-                    Image.asset(AppIcons.ic_barcode_read),
+                    const Icon(Icons.edit_location),
                     const SizedBox(width: 8),
                     Text(
-                      "Quét QR Code",
+                      "Thanh tìm kiếm",
                       style: GoogleFonts.inter(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
@@ -215,13 +274,13 @@ class DeviceHomeManagementScreen extends StatelessWidget {
         child: Row(
           children: [
             Text(
-        "Vũ Quang Home",
-        style: GoogleFonts.inter(
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-          color: AppColors.grey,
-        ),
-      ),
+              "Vũ Quang Home",
+              style: GoogleFonts.inter(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: AppColors.grey,
+              ),
+            ),
             Container(
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,

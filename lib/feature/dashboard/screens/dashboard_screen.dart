@@ -49,7 +49,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           AppIcons.ic_home_tab,
           gaplessPlayback: true,
         ),
-        title: "Thiết bị",
+        title: "Trang chủ",
         activeColorPrimary: AppColors.primaryturquoise,
         inactiveColorPrimary: AppColors.grey,
         routeAndNavigatorSettings: const RouteAndNavigatorSettings(
@@ -65,7 +65,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           AppIcons.ic_auto_tab,
           gaplessPlayback: true,
         ),
-        title: "Tự động hóa",
+        title: "Sân của tôi",
         activeColorPrimary: AppColors.primaryturquoise,
         inactiveColorPrimary: AppColors.grey,
         routeAndNavigatorSettings: const RouteAndNavigatorSettings(

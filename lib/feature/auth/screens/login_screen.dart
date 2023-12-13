@@ -1,12 +1,18 @@
+import 'package:electricity_meter_app/apis/dio_manager.dart';
 import 'package:electricity_meter_app/constants/app_colors.dart';
 import 'package:electricity_meter_app/constants/app_resources.dart';
+import 'package:electricity_meter_app/core/blocs/auth/auth_bloc.dart';
+import 'package:electricity_meter_app/core/services/auth/auth_service.dart';
+import 'package:electricity_meter_app/feature/auth/screens/sms_login_screen.dart';
 import 'package:electricity_meter_app/feature/auth/widgets/login_tab_bar.dart';
 import 'package:electricity_meter_app/general/routes/route_paths.dart';
+import 'package:electricity_meter_app/general/utils/navigate_util.dart';
 import 'package:electricity_meter_app/general/widgets/base_widget.dart';
 import 'package:electricity_meter_app/general/widgets/buttons/app_button.dart';
 import 'package:electricity_meter_app/general/widgets/buttons/submit_button.dart';
 import 'package:electricity_meter_app/general/widgets/default_text_input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -19,16 +25,16 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  late TextEditingController _emailController;
+  late TextEditingController _usernameController;
   late TextEditingController _passwordController;
   late TextEditingController _phoneNumberController;
-  final _emailFormKey = GlobalKey<FormState>();
+  final _usernameFormKey = GlobalKey<FormState>();
   final _phoneFormKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
-    _emailController = TextEditingController();
+    _usernameController = TextEditingController();
     _passwordController = TextEditingController();
     _phoneNumberController = TextEditingController();
     super.initState();
@@ -36,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen>
 
   @override
   void dispose() {
-    _emailController.dispose();
+    _usernameController.dispose();
     _passwordController.dispose();
     _phoneNumberController.dispose();
     super.dispose();
@@ -54,7 +60,10 @@ class _LoginScreenState extends State<LoginScreen>
           ),
           child: Column(
             children: [
-              Image.asset(AppImages.img_login),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Image.asset(AppImages.img_login_center),
+              ),
               const SizedBox(height: 20),
               Text(
                 "Đăng nhập",
@@ -65,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen>
               ),
               const SizedBox(height: 2),
               Text(
-                "Tham gia ngay để trải nghiệm sản phẩm công tơ điện tử để quản lý tiêu thụ điện thông minh.",
+                "Tham gia ngay để trải nghiệm ứng dụng đặt và quản lý sân bóng một cách hiệu quả.",
                 textAlign: TextAlign.center,
                 style: GoogleFonts.inter(
                   fontWeight: FontWeight.w400,
@@ -83,13 +92,13 @@ class _LoginScreenState extends State<LoginScreen>
                     Column(
                       children: [
                         Form(
-                          key: _emailFormKey,
+                          key: _usernameFormKey,
                           child: Column(
                             children: [
                               const SizedBox(height: 10),
                               DefaultTextInput(
-                                controller: _emailController,
-                                label: "Nhập địa chỉ email",
+                                controller: _usernameController,
+                                label: "Nhập username",
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return "Thông tin không hợp lệ";
@@ -112,10 +121,18 @@ class _LoginScreenState extends State<LoginScreen>
                               const SizedBox(height: 16),
                               SubmitButton(
                                 text: "Đăng nhập",
-                                onPress: () {
-                                  //if (_emailFormKey.currentState!.validate()) {}
-                                  Navigator.of(context)
-                                      .pushNamed(RoutePaths.DASHBOARD);
+                                onPress: () async {
+                                  if (_usernameFormKey.currentState!
+                                      .validate()) {
+                                    context.read<AuthBloc>().add(
+                                          LoginRequested(
+                                            _usernameController.text,
+                                            _passwordController.text,
+                                          ),
+                                        );
+                                  }
+                                  /*Navigator.of(context)
+                                      .pushNamed(RoutePaths.DASHBOARD);*/
                                 },
                               ),
                             ],
@@ -133,8 +150,7 @@ class _LoginScreenState extends State<LoginScreen>
                         const SizedBox(height: 24),
                         AppButton(
                           text: "Tạo tài khoản",
-                          onPress: () => Navigator.of(context)
-                              .pushNamed(RoutePaths.REGISTER),
+                          onPress: () {},
                         ),
                       ],
                     ),
@@ -161,8 +177,8 @@ class _LoginScreenState extends State<LoginScreen>
                                 text: "Đăng nhập",
                                 onPress: () {
                                   if (_phoneFormKey.currentState!.validate()) {
-                                    Navigator.of(context)
-                                        .pushNamed(RoutePaths.SMS_LOGIN);
+                                    NavigateUtil().navigateToView(
+                                        context, const SmsLoginScreen());
                                   }
                                 },
                               ),
@@ -181,8 +197,7 @@ class _LoginScreenState extends State<LoginScreen>
                         const SizedBox(height: 24),
                         AppButton(
                           text: "Tạo tài khoản",
-                          onPress: () => Navigator.of(context)
-                              .pushNamed(RoutePaths.REGISTER),
+                          onPress: () {},
                         ),
                       ],
                     ),

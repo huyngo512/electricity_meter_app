@@ -83,7 +83,7 @@ class _AccountRegisterScreenState extends State<AccountRegisterScreen>
               ),
               const SizedBox(height: 2),
               Text(
-                "Tạo ngay tài khoản để tham gia trải nghiệm ứng dụng công tơ điện tử",
+                "Tạo ngay tài khoản để tham gia trải nghiệm ứng dụng đặt và quản lý sân bóng",
                 textAlign: TextAlign.center,
                 style: GoogleFonts.inter(
                   fontWeight: FontWeight.w400,

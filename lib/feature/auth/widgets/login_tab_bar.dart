@@ -14,7 +14,7 @@ class LoginTabBar extends StatelessWidget {
       tabs: [
         Tab(
           child: Text(
-            "Email",
+            "Username",
             style: GoogleFonts.inter(
               fontSize: 16,
               fontWeight: FontWeight.w600,
